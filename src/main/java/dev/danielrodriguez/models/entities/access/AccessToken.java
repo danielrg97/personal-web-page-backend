@@ -30,6 +30,5 @@ public class AccessToken {
     private Date creationDate;
 
     @OneToOne
-    @JsonIgnore
     private User user;
 }

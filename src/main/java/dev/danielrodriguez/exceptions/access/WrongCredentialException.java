@@ -1,5 +1,6 @@
 package dev.danielrodriguez.exceptions.access;
 
+import dev.danielrodriguez.exceptions.ApplicationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -7,20 +8,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Excepcion para casos en los que las credenciales de acceso sean invalidas
  */
 @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-public class WrongCredentialException extends Exception{
-    private boolean suppressStacktrace = false;
-    public WrongCredentialException(String message, boolean suppressStacktrace){
-        super(message, null, suppressStacktrace, !suppressStacktrace);
-        this.suppressStacktrace = suppressStacktrace;
-    }
+public class WrongCredentialException extends ApplicationException {
 
-
-    @Override
-    public String toString() {
-        if (suppressStacktrace) {
-            return getLocalizedMessage();
-        } else {
-            return super.toString();
-        }
+    public WrongCredentialException(String message, boolean suppressStacktrace) {
+        super(message, suppressStacktrace);
     }
 }

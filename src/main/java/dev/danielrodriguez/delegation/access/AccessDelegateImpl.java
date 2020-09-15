@@ -1,9 +1,7 @@
 package dev.danielrodriguez.delegation.access;
 
-import dev.danielrodriguez.exceptions.access.AccessException;
-import dev.danielrodriguez.exceptions.access.ModuleException;
-import dev.danielrodriguez.exceptions.access.RoleException;
-import dev.danielrodriguez.exceptions.access.WrongCredentialException;
+import dev.danielrodriguez.exceptions.ApplicationException;
+import dev.danielrodriguez.exceptions.access.*;
 import dev.danielrodriguez.models.dao.access.AccessTokenDao;
 import dev.danielrodriguez.models.dao.access.ModuleDao;
 import dev.danielrodriguez.models.dao.access.RoleDao;
@@ -59,9 +57,7 @@ public class AccessDelegateImpl implements AccessDelegate{
     @Override
     public AccessToken authenticate(LoginCredential loginCredential) throws WrongCredentialException {
         //Busco por nombre de usuario
-        List<User> userList = userDao.findByUserName(loginCredential.getUsername());
-        if(userList.size() == 0)  throw new WrongCredentialException("El usuario no existe", true);
-        User user = userList.get(0);
+        User user = userDao.findByUserName(loginCredential.getUsername()).orElseThrow(() -> new WrongCredentialException("El usuario no existe", true));
         //Compruebo que la contraseña sea correcta
         if (!passwordEncoder.matches(loginCredential.getPassword(), user.getPassword())) throw new WrongCredentialException("Contraseña incorrecta", true);
         //Genero el token y lo retorno
@@ -136,11 +132,7 @@ public class AccessDelegateImpl implements AccessDelegate{
 
     @Override
     public void logout(String token) throws AccessException {
-        try{
-            accessTokenDao.delete(accessTokenDao.findAccessTokenByToken(token).get(0));
-        }catch (Exception e){
-            throw new AccessException("Error al desloggearse", false);
-        }
+        accessTokenDao.delete(accessTokenDao.findAccessTokenByToken(token).orElseThrow(() -> new TokenNotFoundException("No hay token que eliminar", true)));
     }
 
     /**

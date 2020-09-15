@@ -1,13 +1,15 @@
 package dev.danielrodriguez.controllers.users;
 
+import dev.danielrodriguez.annotations.AllowedRole;
 import dev.danielrodriguez.delegation.users.UserDelegate;
+import dev.danielrodriguez.exceptions.ApplicationException;
 import dev.danielrodriguez.exceptions.users.UserException;
+import dev.danielrodriguez.models.dto.access.UserRegister;
 import dev.danielrodriguez.models.entities.access.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Controller
@@ -20,34 +22,32 @@ public class UsersController {
         this.userDelegate = userDelegate;
     }
 
-    @RolesAllowed("admin")
     @PostMapping(path = "/create-user", produces = "application/json")
     @ResponseBody
-    public User createUser(@RequestBody User user) throws UserException {
+    public User createUser(@RequestBody UserRegister user) throws ApplicationException {
         return userDelegate.createUser(user);
     }
 
-    @RolesAllowed("admin")
     @PutMapping(path = "/update-user", produces = "application/json")
     @ResponseBody
-    public User updateUser(@RequestBody User user) throws UserException {
+    public User updateUser(@RequestBody UserRegister user) throws ApplicationException {
         return userDelegate.updateUser(user);
     }
 
-    @RolesAllowed("admin")
+    @AllowedRole(role = "admin")
     @DeleteMapping(path = "/delete-user")
     public void deleteUser(@RequestBody User user) throws UserException {
         userDelegate.deleteUser(user);
     }
 
-    @RolesAllowed("admin")
+    @AllowedRole(role = "admin")
     @GetMapping(path = "/get-all-users")
     @ResponseBody
     public List<User> getAllUsers() throws UserException {
         return userDelegate.getUsers();
     }
 
-    @RolesAllowed("admin")
+    @AllowedRole(role = "admin")
     @GetMapping(path = "/get-user-by-id")
     @ResponseBody
     public User getAllUsers(Integer id) throws UserException {

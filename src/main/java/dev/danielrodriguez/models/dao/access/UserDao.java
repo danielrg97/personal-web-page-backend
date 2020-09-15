@@ -4,8 +4,10 @@ import dev.danielrodriguez.models.entities.access.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDao extends CrudRepository<User, Integer> {
-    List<User> findByUserNameAndPassword(String username, String password);
-    List<User> findByUserName(String username);
+    Optional<User> findByUserNameAndPassword(String username, String password);
+    Optional<User> findByUserName(String username);
+    Optional<User> findByEmail(String email);
 }

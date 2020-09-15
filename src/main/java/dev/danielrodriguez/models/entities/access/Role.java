@@ -1,5 +1,6 @@
 package dev.danielrodriguez.models.entities.access;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class Role {
     @Column(name = "T02_COMMENT")
     private String comment;
 
+    @JsonIgnore
     @OneToMany(targetEntity = Module.class)
     private List modules;
 }

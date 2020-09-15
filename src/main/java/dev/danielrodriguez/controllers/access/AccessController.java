@@ -1,5 +1,6 @@
 package dev.danielrodriguez.controllers.access;
 
+import dev.danielrodriguez.annotations.AllowedRole;
 import dev.danielrodriguez.delegation.access.AccessDelegate;
 import dev.danielrodriguez.exceptions.access.AccessException;
 import dev.danielrodriguez.exceptions.access.WrongCredentialException;
@@ -8,7 +9,6 @@ import dev.danielrodriguez.models.entities.access.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,7 +25,7 @@ public class AccessController {
      */
     @Autowired
     public AccessController(AccessDelegate accessDelegate){
-        this.accessDelegate = accessDelegate;;
+        this.accessDelegate = accessDelegate;
     }
 
     /**
@@ -34,7 +34,7 @@ public class AccessController {
      * @return
      * @throws WrongCredentialException
      */
-    @PostMapping(path = "/authenticate", produces = "application/json", consumes = "application/json")
+    @PostMapping(path = "/authenticate")//, produces = "application/json", consumes = "application/json")
     @ResponseBody
     public AccessToken authenticate(@RequestBody LoginCredential user) throws WrongCredentialException {
         AccessToken token = accessDelegate.authenticate(user);
@@ -50,10 +50,9 @@ public class AccessController {
         accessDelegate.logout(httpServletRequest.getHeader(HEADER));
     }
 
-    //TODO: hacer que el @RolesAllowed funcione
-    @RolesAllowed("admin")
-    @GetMapping(path = "/prueba-de-acceso", produces="application/json")
+    @RequestMapping(path = "/prueba-de-acceso", produces="application/json")
     @ResponseBody
+    @AllowedRole(role = "admin")
     public String endpointScope(){
         return "endpoint alcanzado";
     }

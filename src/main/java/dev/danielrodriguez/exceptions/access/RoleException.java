@@ -1,22 +1,13 @@
 package dev.danielrodriguez.exceptions.access;
 
+import dev.danielrodriguez.exceptions.ApplicationException;
+
 /**
  * Excepcion para casos de uso de Roles de los usuarios
  */
-public class RoleException extends Exception{
-    private boolean suppressStacktrace = false;
-    public RoleException(String message, boolean suppressStacktrace){
-        super(message, null, suppressStacktrace, !suppressStacktrace);
-        this.suppressStacktrace = suppressStacktrace;
-    }
+public class RoleException extends ApplicationException {
 
-
-    @Override
-    public String toString() {
-        if (suppressStacktrace) {
-            return getLocalizedMessage();
-        } else {
-            return super.toString();
-        }
+    public RoleException(String message, boolean suppressStacktrace) {
+        super(message, suppressStacktrace);
     }
 }

@@ -1,22 +1,13 @@
 package dev.danielrodriguez.exceptions.access;
 
+import dev.danielrodriguez.exceptions.ApplicationException;
+
 /**
  * Excepcion para casos de uso de Modulos del aplicativo
  */
-public class ModuleException extends Exception{
-    private boolean suppressStacktrace = false;
-    public ModuleException(String message, boolean suppressStacktrace){
-        super(message, null, suppressStacktrace, !suppressStacktrace);
-        this.suppressStacktrace = suppressStacktrace;
-    }
+public class ModuleException extends ApplicationException {
 
-
-    @Override
-    public String toString() {
-        if (suppressStacktrace) {
-            return getLocalizedMessage();
-        } else {
-            return super.toString();
-        }
+    public ModuleException(String message, boolean suppressStacktrace) {
+        super(message, suppressStacktrace);
     }
 }

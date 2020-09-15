@@ -1,19 +1,10 @@
 package dev.danielrodriguez.exceptions.access;
 
-public class AccessException extends Exception{
-    private boolean suppressStacktrace = false;
-    public AccessException(String message, boolean suppressStacktrace){
-        super(message, null, suppressStacktrace, !suppressStacktrace);
-        this.suppressStacktrace = suppressStacktrace;
-    }
+import dev.danielrodriguez.exceptions.ApplicationException;
 
+public class AccessException extends ApplicationException {
 
-    @Override
-    public String toString() {
-        if (suppressStacktrace) {
-            return getLocalizedMessage();
-        } else {
-            return super.toString();
-        }
+    public AccessException(String message, boolean suppressStacktrace) {
+        super(message, suppressStacktrace);
     }
 }
